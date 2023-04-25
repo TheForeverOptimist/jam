@@ -1,19 +1,32 @@
-import React from 'react';
-import { Counter } from './features/Counter';
-import './App.css';
-import Sidebar from './Sidebar.jsx';
-import Chat from "./Chat.jsx";
+import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { getUser } from "../../utilities/users-service";
+import "./App.css";
+import AuthPage from "../AuthPage/AuthPage";
+import NavBar from "../../components/NavBar/NavBar";
+import Sidebar from "../../Sidebar.jsx"
+import Chat from "../../Chat.jsx";
+import FriendsList from "../../FriendsList.jsx";
 
-function App() {
-  return (
-    <div className="app">
 
-      {/* sidebar */}
-      <Sidebar />
-      {/* chat */}
-      <Chat />
-    </div>
-  );
+export default function App() {
+    const [user, setUser] = useState(getUser());
+
+    return (
+        <main className="App">
+            {user ? (
+                <>
+                <div className="container">
+                    <NavBar user={user} setUser={setUser} />
+                    <Sidebar />
+                    <Chat />
+                    <FriendsList />
+                </div>
+                </>
+            ) : (
+                <AuthPage setUser={setUser} />
+            )}
+        </main>
+    );
 }
 
-export default App;
